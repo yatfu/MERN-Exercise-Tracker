@@ -11,7 +11,7 @@ router.route('/add').post((req, res) => {
   const username = req.body.username
   const description = req.body.description
   const duration = Number(req.body.duration)
-  const date = Date.parse(req.body.date)
+  const date = req.body.date != null ? Date.parse(req.body.date) : new Date()
   
   const newExercise = new Exercise({ username, description, duration, date })
 
@@ -20,7 +20,7 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err))
 })
 
-router.route('/:id').delete((req, res) => {
+router.route('/delete/:id').delete((req, res) => {
   Exercise.findByIdAndDelete(req.params.id)
     .then(() => res.json('Exercise deleted'))
     .catch(err => res.status(400).json('Error: ' + err))
